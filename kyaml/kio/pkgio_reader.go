@@ -171,6 +171,9 @@ type LocalPackageReader struct {
 	// path and mode.
 	OmitReaderAnnotations bool `yaml:"omitReaderAnnotations,omitempty"`
 
+	// DisableUnwrapping will prevents Resources in Lists and ResourceLists from being unwrapped
+	DisableUnwrapping bool `yaml:"disableUnwrapping,omitempty"`
+
 	// SetAnnotations are annotations to set on the Resources as they are read.
 	SetAnnotations map[string]string `yaml:"setAnnotations,omitempty"`
 
@@ -263,7 +266,7 @@ func (r *LocalPackageReader) readFile(path string, _ os.FileInfo) ([]*yaml.RNode
 	defer f.Close()
 
 	rr := &ByteReader{
-		DisableUnwrapping:     true,
+		DisableUnwrapping:     r.DisableUnwrapping,
 		Reader:                f,
 		OmitReaderAnnotations: r.OmitReaderAnnotations,
 		SetAnnotations:        r.SetAnnotations,
